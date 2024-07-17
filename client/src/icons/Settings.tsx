@@ -1,4 +1,4 @@
-import { IconProps } from "../utils/types";
+import { IconProps } from "../utils/type";
 
 
 const Settings: React.FC<IconProps> = ({ size = 24, className = "" }) => {
