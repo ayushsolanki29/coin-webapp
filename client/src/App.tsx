@@ -1,12 +1,12 @@
 import "./App.css";
-import HomePage from "./components/Home";
+import HomePage from "./Components/Home";
 import {
   BrowserRouter,
   Switch,
   Route,
 } from "react-router-dom";
-import Registration from "./components/Registration";
-import LoginPage from "./components/Login";
+import Registration from "./Components/Registration";
+import LoginPage from "./Components/Login";
 function App() {
   return (
     <div>
