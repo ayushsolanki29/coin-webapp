@@ -1,5 +1,5 @@
 import { dollarCoin, youtube } from "../images";
-import BottomNavBar from "./BottomNavBar";
+import BottomNavBar from "./BottomNavBar.tsx";
 
 const EarnCoins = () => {
   return (

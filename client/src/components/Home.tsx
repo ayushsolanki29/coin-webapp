@@ -7,7 +7,7 @@ import {
   dollarCoin,
 } from "../images";
 
-import BottomNavBar from "./BottomNavBar";
+import BottomNavBar from "./BottomNavBar.tsx";
 import MainCircle from "./MainCircle";
 import Header from "./Header";
 import DailyTask from "./DailyTask";

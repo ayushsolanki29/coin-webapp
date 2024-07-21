@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import BottomNavBar from "./BottomNavBar";
+import BottomNavBar from "./BottomNavBar.tsx";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";

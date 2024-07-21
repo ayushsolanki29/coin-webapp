@@ -1,5 +1,5 @@
 import { dollarCoin } from "../images";
-import BottomNavBar from "./BottomNavBar";
+import BottomNavBar from "./BottomNavBar.tsx";
 
 const Friends = () => {
   const handleCopyCode = () => {
