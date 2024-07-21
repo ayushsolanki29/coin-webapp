@@ -6,6 +6,7 @@ import dailyCipher_img from "./daily-cipher.png";
 import dailyCombo_img from "./daily-combo.png";
 import mainCharacter from "./main-character.png";
 import hamsterCoin from "./hamster-coin.png";
+import youtube from "./youtube.png";
 
 export {
     hamsterExchange,
@@ -15,5 +16,6 @@ export {
     dailyCipher_img,
     dailyCombo_img,
     mainCharacter,
-    hamsterCoin
+    hamsterCoin,
+    youtube
 };

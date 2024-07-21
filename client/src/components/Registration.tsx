@@ -1,43 +1,80 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import BottomNavBar from "./BottomNavBar";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { StoreContext } from "../context/StoreContext";
+
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const Registration: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-[#1d2025] text-white flex flex-col items-center justify-center px-4 py-8">
-      <div className="mx-auto max-w-lg">
-        <h1 className="text-center text-2xl font-bold text-[#f3ba2f] sm:text-3xl">
-          Get started today
-        </h1>
+  const [data, setData] = useState<FormData>({ name: "", email: "", password: "" });
+  const { setToken, token, url  } = useContext(StoreContext);
+  const navigate = useNavigate();
 
-        <p className="mx-auto mt-4 max-w-md text-center ">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati
-          sunt dolores deleniti inventore quaerat mollitia?
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const onRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(url + "api/user/register", data);
+      if (response.data.success) {
+        const newToken = response.data.token;
+        setToken(newToken);
+        localStorage.setItem("coinapp-token", response.data.token);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error("An error occurred while registering.");
+      console.error("Registration error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center px-4 py-8">
+      <div className="mx-auto bg-gray-800 max-w-lg rounded-lg p-6 shadow-lg">
+        <h1 className="text-center text-3xl font-extrabold text-yellow-400">
+          Get Started Today
+        </h1>
+        <p className="mt-4 text-center text-gray-400">
+          Join us and experience the best gaming deals and offers.
         </p>
 
-        <form
-          action="#"
-          className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
-        >
-          <p className="text-center text-lg font-medium">
-            Sign in to your account
-          </p>
-
+        <form onSubmit={onRegister} className="mt-8 space-y-6">
           <div>
-            <label htmlFor="Username" className="sr-only">
-              Username
+            <label htmlFor="name" className="sr-only">
+              Name
             </label>
-
             <div className="relative">
               <input
-                type="Username"
-                className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                placeholder="Enter Username"
-                id="Username"
+                onChange={handleChange}
+                value={data.name}
+                type="text"
+                id="name"
+                name="name"
+                className="w-full rounded-md border-gray-600 bg-gray-700 p-4 pr-12 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
+                placeholder="Enter Full Name"
               />
-
-              <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+              <span className="absolute inset-y-0 right-0 flex items-center pr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-4 text-gray-400"
+                  className="h-5 w-5 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -57,18 +94,20 @@ const Registration: React.FC = () => {
             <label htmlFor="email" className="sr-only">
               Email
             </label>
-
             <div className="relative">
               <input
+                onChange={handleChange}
+                value={data.email}
+                name="email"
                 type="email"
-                className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                placeholder="Enter email"
+                id="email"
+                className="w-full rounded-md border-gray-600 bg-gray-700 p-4 pr-12 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
+                placeholder="Enter Email"
               />
-
-              <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+              <span className="absolute inset-y-0 right-0 flex items-center pr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-4 text-gray-400"
+                  className="h-5 w-5 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -88,18 +127,20 @@ const Registration: React.FC = () => {
             <label htmlFor="password" className="sr-only">
               Password
             </label>
-
             <div className="relative">
               <input
+                onChange={handleChange}
+                value={data.password}
+                name="password"
                 type="password"
-                className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                placeholder="Enter password"
+                id="password"
+                className="w-full rounded-md border-gray-600 bg-gray-700 p-4 pr-12 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
+                placeholder="Enter Password"
               />
-
-              <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+              <span className="absolute inset-y-0 right-0 flex items-center pr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-4 text-gray-400"
+                  className="h-5 w-5 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -123,16 +164,23 @@ const Registration: React.FC = () => {
 
           <button
             type="submit"
-            className="block w-full rounded-lg bg-[#f3ba2f] px-5 py-3 text-sm font-medium text-white"
+            className="w-full rounded-md bg-yellow-400 p-3 text-sm font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
           >
-            Sign in
+            Register
           </button>
 
-          <p className="text-center text-md gap-2 ">
-           Already Have an Account ? <a className="text-[#f3ba2f] font-bold" href="/login">  Login </a>
-          </p> 
+          <p className="text-center text-sm text-gray-400">
+            Already have an account?{" "}
+            <Link
+              className="font-bold text-yellow-400 hover:underline"
+              to="/login"
+            >
+              Login
+            </Link>
+          </p>
         </form>
       </div>
+      <BottomNavBar />
     </div>
   );
 };

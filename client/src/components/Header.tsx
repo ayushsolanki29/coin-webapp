@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Hamster from "../icons/Hamster";
 import binanceLogo from "../images/binance-logo.png";
 import dollarCoin from "../images/dollar-coin.png";
 import Info from "../icons/Info";
 import Settings from "../icons/Settings";
+import { Link } from "react-router-dom";
+import { StoreContext } from "../context/StoreContext";
 interface HeaderProps {
   levelNames: string[];
   levelIndex: number;
@@ -19,16 +21,22 @@ const Header: React.FC<HeaderProps> = ({
   profitPerHour,
   formatProfitPerHour,
 }) => {
+  const { userData, token } = useContext(StoreContext);
   return (
     <div className="px-4 z-10">
-      <div className="flex items-center space-x-2 pt-4">
-        <div className="p-1 rounded-lg bg-[#1d2025]">
-          <Hamster size={24} className="text-[#d4d4d4]" />
+      {token ? (
+        <div className="flex items-center space-x-2 pt-4">
+          <div className="p-1 rounded-lg bg-[#1d2025]">
+            <Hamster size={24} className="text-[#d4d4d4]" />
+          </div>
+          <div>
+            <p className="text-sm">{userData?.name} (CEO)</p>
+          </div>
         </div>
-        <div>
-          <p className="text-sm">username (CEO)</p>
-        </div>
-      </div>
+      ) : (
+        <div className="p-1 z-10"></div>
+      )}
+
       <div className="flex items-center justify-between space-x-4 mt-1">
         <div className="flex items-center w-1/3">
           <div className="w-full">
@@ -67,10 +75,9 @@ const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
           <div className="h-[32px] w-[2px] bg-[#43433b] mx-2"></div>
-         <a href="/login">
-          <Settings className="text-white" />
-         </a>
-        
+          <Link to="/settings">
+            <Settings className="text-white" />
+          </Link>
         </div>
       </div>
     </div>

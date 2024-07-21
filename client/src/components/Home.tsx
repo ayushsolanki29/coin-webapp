@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   dailyCipher_img,
@@ -12,8 +12,32 @@ import MainCircle from "./MainCircle";
 import Header from "./Header";
 import DailyTask from "./DailyTask";
 import FloatingPoints from "./FloatingPoints";
+import { StoreContext } from "../context/StoreContext";
+import Popup from "./Popup";
 
 const HomePage: React.FC = () => {
+  const { points, setPoints, levelIndex, setLevelIndex, token } =
+    useContext(StoreContext);
+  const [pointsToAdd, setPointsToAdd] = useState(10);
+  const [profitPerHour, setProfitPerHour] = useState(1000);
+  const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>(
+    []
+  );
+  const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
+  const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
+  const [dailyComboTimeLeft, setDailyComboTimeLeft] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  useEffect(() => {
+    if (!token) {
+      setIsModalOpen(true);
+    }else{
+      setIsModalOpen(false);
+    }
+  }, [token]);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const levelNames = [
     "Bronze",
     "Silver",
@@ -26,6 +50,7 @@ const HomePage: React.FC = () => {
     "God",
     "Immortal",
   ];
+
   const levelMinPoints = [
     0, // Bronze
     5000, // Silver
@@ -38,27 +63,6 @@ const HomePage: React.FC = () => {
     100000000, // GrandMaster
     1000000000, // Lord
   ];
-
-  const [levelIndex, setLevelIndex] = useState(() => {
-    // Read from local storage on component mount
-    const savedLevelIndex = localStorage.getItem("levelIndex");
-    return savedLevelIndex ? parseInt(savedLevelIndex, 10) : 0;
-  });
-  const [points, setPoints] = useState(() => {
-    // Read from local storage on component mount
-    const savedPoints = localStorage.getItem("points");
-    return savedPoints ? parseInt(savedPoints, 10) : 0;
-  });
-  const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>(
-    []
-  );
-
-  const pointsToAdd = 100;
-  const profitPerHour = 100000;
-
-  const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
-  const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
-  const [dailyComboTimeLeft, setDailyComboTimeLeft] = useState("");
 
   const calculateTimeLeft = (targetHour: number) => {
     const now = new Date();
@@ -92,12 +96,6 @@ const HomePage: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    // Save points and levelIndex to local storage whenever they change
-    localStorage.setItem("points", points.toString());
-    localStorage.setItem("levelIndex", levelIndex.toString());
-  }, [points, levelIndex]);
-
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
@@ -130,19 +128,21 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    const currentLevelMin = levelMinPoints[levelIndex];
-    const nextLevelMin = levelMinPoints[levelIndex + 1];
-    if (points >= nextLevelMin && levelIndex < levelNames.length - 1) {
+    if (
+      points >= levelMinPoints[levelIndex + 1] &&
+      levelIndex < levelNames.length - 1
+    ) {
       setLevelIndex(levelIndex + 1);
-    } else if (points < currentLevelMin && levelIndex > 0) {
+      setProfitPerHour((prev) => prev * 1.05);
+      setPointsToAdd((prev) => prev * 1.02); // Increased by 2% per level
+    } else if (points < levelMinPoints[levelIndex] && levelIndex > 0) {
       setLevelIndex(levelIndex - 1);
+      setProfitPerHour((prev) => prev / 1.05);
+      setPointsToAdd((prev) => prev / 1.02); // Decreased by 2% per level
     }
   }, [points, levelIndex, levelMinPoints, levelNames.length]);
 
   const formatProfitPerHour = (profit: number) => {
-    if (profit >= 1000000000) return `+${(profit / 1000000000).toFixed(2)}Cr`;
-    if (profit >= 1000000) return `+${(profit / 1000000).toFixed(2)}Lakhs`;
-    if (profit >= 1000) return `+${(profit / 1000).toFixed(2)}K`;
     return `+${profit}`;
   };
 
@@ -153,9 +153,9 @@ const HomePage: React.FC = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, [profitPerHour]);
-
   return (
     <div className="bg-black flex justify-center">
+      <Popup isOpen={isModalOpen} onClose={closeModal} />
       <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-xl">
         <Header
           formatProfitPerHour={formatProfitPerHour}
