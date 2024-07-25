@@ -43,7 +43,7 @@ const StoreContextProvider: FC<StoreContextProviderProps> = ({ children }) => {
   const [points, setPoints] = useState<number>(0);
   const [levelIndex, setLevelIndex] = useState<number>(0);
   const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
-  const url = "https://coin-webapp.vercel.app/";
+  const url = "https://coin-webapp-server.vercel.app/";
   // const url = "http://localhost:4000/";
   const fetchUserData = async (token: string | null) => {
     if (token) {
