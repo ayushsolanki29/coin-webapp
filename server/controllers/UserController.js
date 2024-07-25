@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+// import bcrypt from "bcrypt";
 import validator from "validator";
 import userModel from "../models/userModel.js";
 
@@ -54,14 +54,14 @@ const registerUser = async (req, res) => {
     }
 
     // Hashing user password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create a new user
     const newUser = new userModel({
       name: name,
       email: email,
-      password: hashedPassword,
+      password: password,
     });
 
     // Save the user to the database
