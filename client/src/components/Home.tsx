@@ -14,15 +14,20 @@ import DailyTask from "./DailyTask";
 import FloatingPoints from "./FloatingPoints";
 import { StoreContext } from "../context/StoreContext";
 import Popup from "./Popup";
+import InfoModal from "./InfoModal.tsx";
 
 const HomePage: React.FC = () => {
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
   const { points, setPoints, levelIndex, setLevelIndex, token } =
     useContext(StoreContext);
   const [pointsToAdd, setPointsToAdd] = useState(10);
-  const [profitPerHour, setProfitPerHour] = useState(1000);
+  const [profitPerHour, setProfitPerHour] = useState(2000);
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>(
     []
   );
+  const closeInfoModal = () => {
+    setIsModalOpen2(false);
+  };
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
   const [dailyComboTimeLeft, setDailyComboTimeLeft] = useState("");
@@ -30,7 +35,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     if (!token) {
       setIsModalOpen(true);
-    }else{
+    } else {
       setIsModalOpen(false);
     }
   }, [token]);
@@ -49,19 +54,21 @@ const HomePage: React.FC = () => {
     "Supreme",
     "God",
     "Immortal",
+    "Universe",
   ];
 
   const levelMinPoints = [
     0, // Bronze
-    5000, // Silver
-    25000, // Gold
+    8000, // Silver
+    30000, // Gold
     100000, // Platinum
     1000000, // Diamond
-    2000000, // Epic
+    5000000, // Epic
     10000000, // Legendary
     50000000, // Master
     100000000, // GrandMaster
     1000000000, // Lord
+    10000000000,
   ];
 
   const calculateTimeLeft = (targetHour: number) => {
@@ -127,21 +134,21 @@ const HomePage: React.FC = () => {
     return Math.min(progress, 100);
   };
 
+
   useEffect(() => {
     if (
-      points >= levelMinPoints[levelIndex + 1] &&
-      levelIndex < levelNames.length - 1
+      levelIndex < levelNames.length - 1 &&
+      points >= levelMinPoints[levelIndex + 1]
     ) {
-      setLevelIndex(levelIndex + 1);
-      setProfitPerHour((prev) => prev * 1.05);
-      setPointsToAdd((prev) => prev * 1.02); // Increased by 2% per level
-    } else if (points < levelMinPoints[levelIndex] && levelIndex > 0) {
-      setLevelIndex(levelIndex - 1);
-      setProfitPerHour((prev) => prev / 1.05);
-      setPointsToAdd((prev) => prev / 1.02); // Decreased by 2% per level
+      setLevelIndex((prev) => prev + 1);
+      setProfitPerHour((prev) => prev + 200 * Math.pow(2, levelIndex)); // Increase by 200, 400, 800, etc.
+      setPointsToAdd((prev) => prev * 2); // Double points to add per click
+    } else if (levelIndex > 0 && points < levelMinPoints[levelIndex]) {
+      setLevelIndex((prev) => prev - 1);
+      setProfitPerHour((prev) => prev - 200 * Math.pow(2, levelIndex - 1)); // Decrease by 200, 400, 800, etc.
+      setPointsToAdd((prev) => prev / 2); // Halve points to add per click
     }
   }, [points, levelIndex, levelMinPoints, levelNames.length]);
-
   const formatProfitPerHour = (profit: number) => {
     return `+${profit}`;
   };
@@ -163,6 +170,7 @@ const HomePage: React.FC = () => {
           calculateProgress={calculateProgress}
           levelIndex={levelIndex}
           levelNames={levelNames}
+          setIsModalOpen2={setIsModalOpen2}
         />
 
         <div className="flex-grow mt-4 bg-[#f3ba2f] rounded-t-[48px] relative top-glow z-0">
@@ -194,7 +202,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </div>
-
+      <InfoModal isOpen={isModalOpen2} onClose={closeInfoModal} />
       <BottomNavBar />
       <FloatingPoints
         clicks={clicks}

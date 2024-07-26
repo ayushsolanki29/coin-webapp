@@ -43,9 +43,17 @@ const Settings = () => {
                 {userData?.email}
               </div>
             </div>
+            <div className="flex gap-2 mb-10">
+              <button className="bg-blue-700 hover:bg-blue-900 w-full  p-3 bottom-0 rounded text-white text-center">
+                Restore Points
+              </button>
+              <button className="bg-yellow-700 hover:bg-yellow-900 w-full   p-3 bottom-0 rounded text-white text-center">
+                Backup Points
+              </button>
+            </div>
             <div
               onClick={handleLogout}
-              className="bg-red-700 hover:bg-red-900   p-3 bottom-0 rounded text-white text-center"
+              className="bg-red-700 hover:bg-red-900  p-3 bottom-0 rounded text-white text-center"
             >
               Logout
             </div>{" "}

@@ -1,7 +1,12 @@
+import { useState } from "react";
 import { dollarCoin } from "../images";
 import BottomNavBar from "./BottomNavBar.tsx";
 
 const Friends = () => {
+  const [code, setCode] = useState("");
+  const handleGenrateCode = () => {
+    setCode("NJSD23");
+  };
   const handleCopyCode = () => {
     const referInput = document.getElementById("refer") as HTMLInputElement;
     referInput.select();
@@ -36,7 +41,9 @@ const Friends = () => {
             <div className="flex items-center space-x-4">
               <img src={dollarCoin} alt="Gift" className="w-12 h-12" />
               <div>
-                <h3 className="text-lg font-semibold">Invite a friend</h3>
+                <h3 className="text-lg font-semibold">
+                  Invite a friend vai Telegram
+                </h3>
                 <p className="text-sm text-yellow-400">
                   +25,000 for you and your friend
                 </p>
@@ -52,7 +59,6 @@ const Friends = () => {
           <h3 className="text-lg font-semibold">Enter Your Frineds Code</h3>
           <input
             type="text"
-            id="refer"
             className="bg-gray-800 rounded-xl p-4 mt-2 w-full text-center"
             placeholder="Enter Your Friend Code"
             autoComplete="off"
@@ -65,21 +71,29 @@ const Friends = () => {
         </button>
         <div className="w-full mt-6">
           <h3 className="text-lg font-semibold">Your Code</h3>
-          <div className="flex w-full space-x-2">
-            <input
-              type="text"
-              value="FHSU546"
-              id="refer"
-              className="bg-gray-800 rounded-l-xl p-4 w-3/4 text-center"
-              placeholder="Enter Your Friend Code"
-              autoComplete="off"
-              readOnly
-            />
+
+          <div className="flex w-full space-x-2 mt-2">
+            {code !== "" ? (
+              <input
+                type="text"
+                id="refer"
+                value="FHSU546"
+                className="bg-gray-800 rounded-l-xl p-4 w-3/4 text-center"
+                placeholder="Enter Your Friend Code"
+                autoComplete="off"
+                readOnly
+              />
+            ) : (
+              ""
+            )}
+            {""}
             <button
-              className="bg-blue-600 rounded-r-xl p-4 w-1/4 text-white"
-              onClick={handleCopyCode}
+              className={`bg-blue-600 hover:bg-blue-800 ${
+                code !== "" ? "rounded-r-xl  w-1/4" : "rounded-xl w-full"
+              }  p-4  text-white`}
+              onClick={ code !== "" ? handleCopyCode : handleGenrateCode}
             >
-              Copy Code
+             {code !== "" ? "Copy":"Genrate Code"}
             </button>
           </div>
         </div>

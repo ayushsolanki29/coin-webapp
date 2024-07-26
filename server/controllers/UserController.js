@@ -14,8 +14,8 @@ const loginUser = async (req, res) => {
     if (!user) {
       return res.json({ success: false, message: "User not Found!" });
     }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+
+    if (password !== user.password) {
       return res.json({ success: false, message: "Password is Invalid" });
     }
     const token = createToken(user._id);
@@ -119,13 +119,19 @@ const fetchUpdateProgress = async function (req, res) {
     const { userId, points, level } = req.body;
     const user = await userModel.findByIdAndUpdate(userId, { points, level });
     if (user) {
-      res.json({ success: true, message: 'Progress updated ', user });
+      res.json({ success: true, message: "Progress updated ", user });
     } else {
-      res.json({ success: false, message: 'User not found' });
+      res.json({ success: false, message: "User not found" });
     }
   } catch (error) {
-    console.error('Update user progress error:', error);
-    res.json({ success: false, message: 'Failed to update user progress' });
+    console.error("Update user progress error:", error);
+    res.json({ success: false, message: "Failed to update user progress" });
   }
 };
-export { registerUser, loginUser, fetchUserData,fetchProgress,fetchUpdateProgress };
+export {
+  registerUser,
+  loginUser,
+  fetchUserData,
+  fetchProgress,
+  fetchUpdateProgress,
+};

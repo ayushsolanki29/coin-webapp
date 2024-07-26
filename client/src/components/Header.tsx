@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { CSSProperties, useContext } from "react";
 import Hamster from "../icons/Hamster";
 import binanceLogo from "../images/binance-logo.png";
 import dollarCoin from "../images/dollar-coin.png";
@@ -6,22 +6,33 @@ import Info from "../icons/Info";
 import Settings from "../icons/Settings";
 import { Link } from "react-router-dom";
 import { StoreContext } from "../context/StoreContext";
+import { ClipLoader } from "react-spinners";
 interface HeaderProps {
   levelNames: string[];
   levelIndex: number;
   calculateProgress: () => number;
   profitPerHour: number;
   formatProfitPerHour: (profit: number) => string;
+  setIsModalOpen2: (isOpen: boolean) => void;
 }
-
-const Header: React.FC<HeaderProps> = ({
-  levelNames,
-  levelIndex,
-  calculateProgress,
-  profitPerHour,
-  formatProfitPerHour,
-}) => {
+const override: CSSProperties = {
+  borderColor: "gray",
+};
+const Header: React.FC<HeaderProps> = (
+  {
+    levelNames,
+    levelIndex,
+    calculateProgress,
+    profitPerHour,
+    formatProfitPerHour,
+    setIsModalOpen2,
+  },
+) => {
   const { userData, token } = useContext(StoreContext);
+  const openModel = () => {
+    setIsModalOpen2(true);
+  };
+
   return (
     <div className="px-4 z-10">
       {token ? (
@@ -30,7 +41,19 @@ const Header: React.FC<HeaderProps> = ({
             <Hamster size={24} className="text-[#d4d4d4]" />
           </div>
           <div>
-            <p className="text-sm">{userData?.name} (CEO)</p>
+            <div className="profile">
+              <p className="text-sm">
+                {!userData?.name ? (
+                  <ClipLoader
+                    color={"#ffffff"}
+                    cssOverride={override}
+                    size={20}
+                  />
+                ) : (
+                  `${userData.name} (CEO)`
+                )}
+              </p>
+            </div>
           </div>
         </div>
       ) : (
@@ -71,7 +94,10 @@ const Header: React.FC<HeaderProps> = ({
                 className="w-[18px] h-[18px]"
               />
               <p className="text-sm">{formatProfitPerHour(profitPerHour)}</p>
-              <Info size={20} className="text-[#43433b]" />
+              <span onClick={openModel}>
+                {" "}
+                <Info size={20} className="text-[#43433b]" />
+              </span>
             </div>
           </div>
           <div className="h-[32px] w-[2px] bg-[#43433b] mx-2"></div>

@@ -43,8 +43,8 @@ const StoreContextProvider: FC<StoreContextProviderProps> = ({ children }) => {
   const [points, setPoints] = useState<number>(0);
   const [levelIndex, setLevelIndex] = useState<number>(0);
   const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
-  const url = "https://coin-webapp-server.vercel.app/";
-  // const url = "http://localhost:4000/";
+  // const url = "https://coin-webapp-server.vercel.app/";
+  const url = "http://localhost:4000/";
   const fetchUserData = async (token: string | null) => {
     if (token) {
       try {
@@ -55,17 +55,13 @@ const StoreContextProvider: FC<StoreContextProviderProps> = ({ children }) => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        if (!response.data.success) {
-          toast.error(response.data.message);
-        } else {
+        if (response.data.success) {
           setUserData(response.data.user);
         }
       } catch (error) {
         toast.error("An error occurred while fetching user data.");
         console.error("Fetch user data error:", error);
       }
-    } else {
-      toast.error("Something went wrong. Please log in again.");
     }
   };
 
@@ -90,7 +86,7 @@ const StoreContextProvider: FC<StoreContextProviderProps> = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem("coinapp-token");
     fetchUserData(storedToken);
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (isDataFetched) {

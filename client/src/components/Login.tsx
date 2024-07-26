@@ -1,16 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { CSSProperties, useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BottomNavBar from "./BottomNavBar.tsx";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { StoreContext } from "../context/StoreContext";
+import { ClipLoader } from "react-spinners";
 
 interface FormData {
   email: string;
   password: string;
 }
 
+const override: CSSProperties = {
+  borderColor: "gray",
+};
+
 const LoginPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<FormData>({ email: "", password: "" });
   const { url, token, setToken } = useContext(StoreContext);
   const navigate = useNavigate();
 
@@ -20,11 +27,6 @@ const LoginPage: React.FC = () => {
     }
   }, [token, navigate]);
 
-  const [data, setData] = useState<FormData>({
-    email: "",
-    password: "",
-  });
-
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
@@ -32,19 +34,22 @@ const LoginPage: React.FC = () => {
 
   const onLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    setIsLoading(true);
     try {
       const response = await axios.post(url + "api/user/login", data);
       if (response.data.success) {
         setToken(response.data.token);
         localStorage.setItem("coinapp-token", response.data.token);
         toast.success(response.data.message);
+        navigate("/");
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       toast.error("An error occurred while logging in.");
       console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -134,8 +139,13 @@ const LoginPage: React.FC = () => {
           <button
             type="submit"
             className="w-full rounded-md bg-yellow-400 p-3 text-sm font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+            disabled={isLoading}
           >
-            Sign In
+            {isLoading ? (
+              <ClipLoader color={"#ffffff"} cssOverride={override} size={20} />
+            ) : (
+              "Sign In"
+            )}
           </button>
 
           <p className="text-center text-sm text-gray-400">

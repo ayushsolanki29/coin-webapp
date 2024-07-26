@@ -7,6 +7,7 @@ import dailyCombo_img from "./daily-combo.png";
 import mainCharacter from "./main-character.png";
 import hamsterCoin from "./hamster-coin.png";
 import youtube from "./youtube.png";
+import roket from "./roket.png";
 
 export {
     hamsterExchange,
@@ -17,5 +18,6 @@ export {
     dailyCombo_img,
     mainCharacter,
     hamsterCoin,
-    youtube
+    youtube,
+    roket
 };

@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { CSSProperties, useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BottomNavBar from "./BottomNavBar.tsx";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { StoreContext } from "../context/StoreContext";
+import { ClipLoader } from "react-spinners";
 
 interface FormData {
   name: string;
@@ -11,9 +12,18 @@ interface FormData {
   password: string;
 }
 
+const override: CSSProperties = {
+  borderColor: "gray",
+};
+
 const Registration: React.FC = () => {
-  const [data, setData] = useState<FormData>({ name: "", email: "", password: "" });
-  const { setToken, token, url  } = useContext(StoreContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<FormData>({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const { setToken, token, url } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +33,7 @@ const Registration: React.FC = () => {
 
   const onRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    setIsLoading(true);
     try {
       const response = await axios.post(url + "api/user/register", data);
       if (response.data.success) {
@@ -37,6 +47,8 @@ const Registration: React.FC = () => {
     } catch (error) {
       toast.error("An error occurred while registering.");
       console.error("Registration error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -164,9 +176,15 @@ const Registration: React.FC = () => {
 
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full rounded-md bg-yellow-400 p-3 text-sm font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
           >
-            Register
+            {isLoading ? (
+              <ClipLoader color={"#ffffff"} cssOverride={override} size={20} />
+            ) : (
+              "Register"
+            )}
+            
           </button>
 
           <p className="text-center text-sm text-gray-400">
