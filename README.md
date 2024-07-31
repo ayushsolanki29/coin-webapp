@@ -30,7 +30,7 @@
 ![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/6.jpg)
 ![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/7.jpg)
 ![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/8.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/vid.mp4)
+https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/vid.mp4
 
 <!-- video -->
 
