@@ -22,15 +22,15 @@
 
 
 ## Sample
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/1.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/2.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/3.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/4.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/5.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/6.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/7.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/8.jpg)
-![img](https://github.com/ayushsolanki29/coin-webapp/blob/main/screenshot/vid.mp4)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/1.jpg)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/2.jpg)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/3.jpg)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/4.jpg)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/5.jpg)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/6.jpg)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/7.jpg)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/8.jpg)
+![img](https://github.com/ayushsolanki29/coin-webapp/blob/master/screenshot/vid.mp4)
 
 <!-- video -->
 
